@@ -40,3 +40,17 @@ export const plugins = [
     [FuseV1Options.OnlyLoadAppFromAsar]: true,
   }),
 ];
+
+export const publishers = [
+  {
+    name: "@electron-forge/publisher-github",
+    config: {
+      draft: false,
+      generateReleaseNotes: true,
+      repository: {
+        owner: "KhalidAlansary",
+        name: "Traffic",
+      },
+    },
+  },
+];

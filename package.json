@@ -11,7 +11,7 @@
     "lint": "eslint ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Khalid Alansary",
   "license": "ISC",
   "type": "module",
   "devDependencies": {

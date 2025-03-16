@@ -1,0 +1,5 @@
+# Editors
+.idea/
+
+node_modules/
+out/

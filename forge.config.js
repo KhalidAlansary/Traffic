@@ -25,6 +25,24 @@ export const makers = [
 ];
 export const plugins = [
   {
+    name: "@electron-forge/plugin-vite",
+    config: {
+      build: [
+        {
+          entry: "src/main.js",
+          config: "vite.main.config.js",
+          target: "main",
+        },
+      ],
+      renderer: [
+        {
+          name: "main_window",
+          config: "vite.renderer.config.js",
+        },
+      ],
+    },
+  },
+  {
     name: "@electron-forge/plugin-auto-unpack-natives",
     config: {},
   },

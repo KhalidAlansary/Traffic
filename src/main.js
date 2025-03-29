@@ -1,4 +1,5 @@
-import { app, BrowserWindow } from "electron/main";
+import { app, BrowserWindow } from "electron";
+import path from "node:path";
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -6,7 +7,14 @@ const createWindow = () => {
     height: 600,
   });
 
-  win.loadFile("index.html");
+  /* global MAIN_WINDOW_VITE_DEV_SERVER_URL, MAIN_WINDOW_VITE_NAME */
+  if (MAIN_WINDOW_VITE_DEV_SERVER_URL) {
+    win.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/src/index.html`);
+  } else {
+    win.loadFile(
+      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+    );
+  }
 };
 
 app.whenReady().then(() => {

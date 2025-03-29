@@ -1,6 +1,6 @@
 {
   "name": "traffic",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "OS scheduler simulator",
   "main": ".vite/build/main.js",
   "scripts": {

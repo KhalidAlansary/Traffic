@@ -1,5 +1,6 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
+const __dirname = import.meta.dirname;
 
 const createWindow = () => {
   const win = new BrowserWindow({

@@ -5,6 +5,14 @@ import PropTypes from "prop-types";
 export default function Chart({ data }) {
   const [ganttChart, setGanttChart] = useState();
 
+  useEffect(() => {
+    drawChart();
+  }, [data]);
+
+  if (!data || data.length === 0) {
+    return <h2>Add processes to see the Gantt chart</h2>;
+  }
+
   let graphDefinition = `
 gantt
     title CPU Scheduling
@@ -21,10 +29,6 @@ gantt
     const { svg } = await mermaid.render("ganttChart", graphDefinition);
     setGanttChart(svg);
   }
-
-  useEffect(() => {
-    drawChart();
-  }, [data]);
 
   if (!ganttChart) {
     return <p>Loading...</p>;

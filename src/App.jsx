@@ -1,11 +1,9 @@
 import { useState } from "react";
 
-import Chart from "./components/Chart";
 import schedulers from "./components/schedulers";
 
 export default function App() {
   const [scheduler, setScheduler] = useState(schedulers.keys().next().value);
-  const [res, setRes] = useState();
 
   const SchedulerComponent = schedulers.get(scheduler);
 
@@ -27,9 +25,7 @@ export default function App() {
         </select>
       </label>
 
-      <SchedulerComponent setRes={setRes} />
-
-      {res && <Chart data={res} />}
+      <SchedulerComponent />
     </main>
   );
 }

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+
+import Analysis from "../Analysis";
+import Chart from "../Chart";
 
 function fcfs(processesData) {
   const processesQueue = Array.from(processesData.entries()).sort(
@@ -20,7 +22,7 @@ function fcfs(processesData) {
   return res;
 }
 
-export default function FirstComeFirstServe({ setRes }) {
+export default function FirstComeFirstServe() {
   const [processesData, setProcessesData] = useState(new Map());
 
   function addProcess(formData) {
@@ -63,18 +65,10 @@ export default function FirstComeFirstServe({ setRes }) {
         </label>
         <input type="submit" value="Add Process" />
       </form>
-      <button
-        type="button"
-        onClick={() => {
-          setRes(fcfs(processesData));
-        }}
-      >
-        Draw Gantt Chart
-      </button>
+
+      <Chart data={fcfs(processesData)} />
+
+      <Analysis data={processesData} />
     </>
   );
 }
-
-FirstComeFirstServe.propTypes = {
-  setRes: PropTypes.func.isRequired,
-};

@@ -10,7 +10,7 @@ export default function App() {
   const SchedulerComponent = schedulers.get(scheduler);
 
   return (
-    <>
+    <main>
       <label>
         Scheduler type:
         <select
@@ -30,6 +30,6 @@ export default function App() {
       <SchedulerComponent setRes={setRes} />
 
       {res && <Chart data={res} />}
-    </>
+    </main>
   );
 }

@@ -5,7 +5,7 @@ import schedulers from "./components/schedulers";
 
 export default function App() {
   const [scheduler, setScheduler] = useState(schedulers.keys().next().value);
-  const [res, setRes] = useState(null);
+  const [res, setRes] = useState();
 
   const SchedulerComponent = schedulers.get(scheduler);
 

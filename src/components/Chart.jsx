@@ -3,7 +3,7 @@ import mermaid from "mermaid";
 import PropTypes from "prop-types";
 
 export default function Chart({ data }) {
-  const [ganttChart, setGanttChart] = useState(null);
+  const [ganttChart, setGanttChart] = useState();
 
   let graphDefinition = `
 gantt

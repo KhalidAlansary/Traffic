@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import mermaid from "mermaid";
 import PropTypes from "prop-types";
 
-export default function Chart({ data }) {
+export default function Chart({ chartData }) {
   const [ganttChart, setGanttChart] = useState();
 
   useEffect(() => {
-    drawChart();
-  }, [data]);
+    if (chartData && chartData.length > 0) {
+      drawChart();
+    }
+  }, [chartData]);
 
-  if (!data || data.length === 0) {
+  if (!chartData || chartData.length === 0) {
     return <h2>Add processes to see the Gantt chart</h2>;
   }
 
@@ -21,7 +23,7 @@ gantt
     section Processes
 `;
 
-  for (const { processID, start, finish } of data) {
+  for (const { processID, start, finish } of chartData) {
     graphDefinition += `    ${processID} : ${start}, ${finish}\n`;
   }
 
@@ -45,7 +47,7 @@ gantt
 }
 
 Chart.propTypes = {
-  data: PropTypes.arrayOf(
+  chartData: PropTypes.arrayOf(
     PropTypes.shape({
       processID: PropTypes.string.isRequired,
       duration: PropTypes.number.isRequired,

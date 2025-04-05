@@ -13,7 +13,7 @@ function fcfs(processesData) {
   const res = [];
   let finish = 0;
   while (processesQueue.length > 0) {
-    let [processID, { burstTime, arrivalTime }] = processesQueue.pop();
+    const [processID, { burstTime, arrivalTime }] = processesQueue.pop();
     const start = Math.max(finish, arrivalTime);
     finish = start + burstTime;
     res.push({
@@ -37,6 +37,8 @@ export default function FirstComeFirstServe() {
       new Map(prev).set(processId, { burstTime, arrivalTime }),
     );
   }
+
+  const chartData = fcfs(processesData);
 
   return (
     <>
@@ -69,9 +71,9 @@ export default function FirstComeFirstServe() {
         <input type="submit" value="Add Process" />
       </form>
 
-      <Chart data={fcfs(processesData)} />
+      <Chart chartData={chartData} />
 
-      <Analysis data={processesData} />
+      <Analysis chartData={chartData} processesData={processesData} />
     </>
   );
 }

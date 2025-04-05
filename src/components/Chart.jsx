@@ -13,10 +13,8 @@ gantt
     section Processes
 `;
 
-  let lastFinishedTime = 0;
-  for (const { processID, duration } of data) {
-    graphDefinition += `    ${processID} : ${lastFinishedTime}, ${lastFinishedTime + duration}\n`;
-    lastFinishedTime += duration;
+  for (const { processID, start, finish } of data) {
+    graphDefinition += `    ${processID} : ${start}, ${finish}\n`;
   }
 
   async function drawChart() {

@@ -1,32 +1,45 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 
-function fcfs(burstTimes) {
-  return Array.from(burstTimes.entries()).flatMap(([key, value]) => ({
-    processID: key,
-    duration: value,
-  }));
+function fcfs(processesData) {
+  const processesQueue = Array.from(processesData.entries()).sort(
+    ([, a], [, b]) => b.arrivalTime - a.arrivalTime,
+  );
+  const res = [];
+  let finish = 0;
+  while (processesQueue.length > 0) {
+    let [processID, { burstTime, arrivalTime }] = processesQueue.pop();
+    const start = Math.max(finish, arrivalTime);
+    finish = start + burstTime;
+    res.push({
+      processID,
+      start,
+      finish,
+    });
+  }
+  return res;
 }
 
 export default function FirstComeFirstServe({ setRes }) {
-  const [burstTimes, setBurstTimes] = useState(new Map());
+  const [processesData, setProcessesData] = useState(new Map());
 
   function addProcess(formData) {
     const processId = formData.get("processId");
     const burstTime = parseInt(formData.get("burstTime"));
+    const arrivalTime = parseInt(formData.get("arrivalTime"));
 
-    if (processId && burstTime) {
-      setBurstTimes((prev) => new Map(prev).set(processId, burstTime));
-    }
+    setProcessesData((prev) =>
+      new Map(prev).set(processId, { burstTime, arrivalTime }),
+    );
   }
 
   return (
     <>
-      <p>Insert processes in the order of arrival</p>
       <ul>
-        {Array.from(burstTimes.entries()).map(([processId, burstTime]) => (
+        {Array.from(processesData.entries()).map(([processId, val]) => (
           <li key={processId}>
-            Process ID: {processId}, Burst Time: {burstTime}
+            Process ID: {processId}, Burst Time: {val.burstTime}, Arrival Time:{" "}
+            {val.arrivalTime}
           </li>
         ))}
       </ul>
@@ -36,7 +49,7 @@ export default function FirstComeFirstServe({ setRes }) {
           <input
             type="text"
             name="processId"
-            defaultValue={`P${burstTimes.size}`}
+            defaultValue={`P${processesData.size}`}
             required
           />
         </label>
@@ -44,12 +57,16 @@ export default function FirstComeFirstServe({ setRes }) {
           Burst Time:
           <input type="number" name="burstTime" required />
         </label>
+        <label>
+          Arrival Time:
+          <input type="number" name="arrivalTime" defaultValue={0} required />
+        </label>
         <input type="submit" value="Add Process" />
       </form>
       <button
         type="button"
         onClick={() => {
-          setRes(fcfs(burstTimes));
+          setRes(fcfs(processesData));
         }}
       >
         Draw Gantt Chart

@@ -5,7 +5,10 @@ import Chart from "../Chart";
 
 function fcfs(processesData) {
   const processesQueue = Array.from(processesData.entries()).sort(
-    ([, a], [, b]) => b.arrivalTime - a.arrivalTime,
+    ([idA, a], [idB, b]) => {
+      const arrivalComparison = b.arrivalTime - a.arrivalTime;
+      return arrivalComparison ? arrivalComparison : idB.localeCompare(idA);
+    },
   );
   const res = [];
   let finish = 0;

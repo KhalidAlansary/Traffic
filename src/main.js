@@ -1,6 +1,5 @@
 import { app, BrowserWindow } from "electron";
 import path from "node:path";
-const __dirname = import.meta.dirname;
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -13,7 +12,10 @@ const createWindow = () => {
     win.loadURL(`${MAIN_WINDOW_VITE_DEV_SERVER_URL}/index.html`);
   } else {
     win.loadFile(
-      path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`),
+      path.join(
+        import.meta.dirname,
+        `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`,
+      ),
     );
   }
 };

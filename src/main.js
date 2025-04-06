@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, session } from "electron";
 import path from "node:path";
 
 const createWindow = () => {
@@ -21,6 +21,15 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
+    callback({
+      responseHeaders: {
+        ...details.responseHeaders,
+        "Content-Security-Policy": ["default-src 'self' 'unsafe-inline';"],
+      },
+    });
+  });
+
   createWindow();
 
   app.on("activate", () => {

@@ -62,11 +62,17 @@ export default function FirstComeFirstServe() {
         </label>
         <label>
           Burst Time:
-          <input type="number" name="burstTime" required />
+          <input type="number" name="burstTime" min="1" required />
         </label>
         <label>
           Arrival Time:
-          <input type="number" name="arrivalTime" defaultValue={0} required />
+          <input
+            type="number"
+            name="arrivalTime"
+            defaultValue="0"
+            min="0"
+            required
+          />
         </label>
         <input type="submit" value="Add Process" />
       </form>

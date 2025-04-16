@@ -30,7 +30,6 @@ function priorityScheduling(processesData) {
       const index = processesQueue.findIndex(([id]) => id === processID);
       processesQueue.splice(index, 1);
 
-      
       const start = finish;
       finish = start + process.burstTime;
       res.push({

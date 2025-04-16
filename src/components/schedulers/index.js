@@ -8,6 +8,6 @@ export default new Map([
   ["First Come First Serve (FCFS)", FirstComeFirstServe],
   // TODO: Uncomment the following schedulers when implemented
   ["Shortest Job First (SJF)", ShortestJobFirst],
-   ["Priority", Priority],
+  ["Priority", Priority],
   // ["Round Robin (RR)", RoundRobin],
 ]);

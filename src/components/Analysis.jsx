@@ -4,9 +4,9 @@ export default function Analysis({ chartData, processesData }) {
   const analysis = [];
 
   for (const [processId, { burstTime, arrivalTime }] of processesData) {
-    const { finish } = chartData.find(
-      (process) => process.processID === processId,
-    );
+    const { finish } = chartData
+      .reverse()
+      .find((process) => process.processID === processId);
     const waitingTime = finish - arrivalTime - burstTime;
     const turnAroundTime = finish - arrivalTime;
     analysis.push({

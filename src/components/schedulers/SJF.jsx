@@ -1,25 +1,47 @@
 import { useState } from "react";
-
 import Analysis from "../Analysis";
 import Chart from "../Chart";
 
 function sjf(processesData) {
-  const processesQueue = Array.from(processesData.entries()).sort(
-    ([, a], [, b]) => a.burstTime - b.burstTime, // Sort only by burst time
-  );
+  let processes = Array.from(processesData.entries())
+    .map(([id, data]) => ({
+      id,
+      ...data,
+    }))
+    .sort((a, b) => a.arrivalTime - b.arrivalTime);
 
   const res = [];
-  let finish = 0;
-  while (processesQueue.length > 0) {
-    const [processID, { burstTime }] = processesQueue.shift();
-    const start = finish;
-    finish = start + burstTime;
+  let currentTime = processes.length > 0 ? processes[0].arrivalTime : 0;
+
+  while (processes.length > 0) {
+    const readyQueue = processes.filter(
+      (process) => process.arrivalTime <= currentTime,
+    );
+    let selectedProcess;
+
+    if (readyQueue.length > 0) {
+      selectedProcess = readyQueue.reduce((prev, curr) =>
+        curr.burstTime < prev.burstTime ? curr : prev,
+      );
+    } else {
+      selectedProcess = processes[0];
+      currentTime = selectedProcess.arrivalTime;
+    }
+
+    const start = currentTime;
+    currentTime = start + selectedProcess.burstTime;
     res.push({
-      processID,
+      processID: selectedProcess.id,
       start,
-      finish,
+      finish: currentTime,
+      arrivalTime: selectedProcess.arrivalTime,
     });
+
+    processes = processes.filter(
+      (process) => process.id !== selectedProcess.id,
+    );
   }
+
   return res;
 }
 
@@ -29,9 +51,12 @@ export default function ShortestJobFirst() {
   function addProcess(formData) {
     const processId = formData.get("processId");
     const burstTime = parseInt(formData.get("burstTime"));
+    const arrivalTime = parseInt(formData.get("arrivalTime"));
 
-    if (!isNaN(burstTime) && processId) {
-      setProcessesData((prev) => new Map(prev).set(processId, { burstTime }));
+    if (!isNaN(burstTime) && !isNaN(arrivalTime) && processId) {
+      setProcessesData((prev) =>
+        new Map(prev).set(processId, { burstTime, arrivalTime }),
+      );
     }
   }
 
@@ -42,7 +67,8 @@ export default function ShortestJobFirst() {
       <ul>
         {Array.from(processesData.entries()).map(([processId, val]) => (
           <li key={processId}>
-            Process ID: {processId}, Burst Time: {val.burstTime}
+            Process ID: {processId}, Burst Time: {val.burstTime}, Arrival Time:{" "}
+            {val.arrivalTime}
           </li>
         ))}
       </ul>
@@ -67,11 +93,19 @@ export default function ShortestJobFirst() {
           Burst Time:
           <input type="number" name="burstTime" min="1" required />
         </label>
+        <label>
+          Arrival Time:
+          <input
+            type="number"
+            name="arrivalTime"
+            min="0"
+            defaultValue="0"
+            required
+          />
+        </label>
         <input type="submit" value="Add Process" />
       </form>
-
       <Chart chartData={chartData} />
-
       <Analysis chartData={chartData} processesData={processesData} />
     </>
   );

@@ -51,7 +51,7 @@ function rr(processesData, timeQuantum) {
     }
   }
 
-  return result.reverse();
+  return result;
 }
 
 export default function RoundRobin() {

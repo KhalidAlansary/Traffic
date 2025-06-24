@@ -1,5 +1,9 @@
 import { app, BrowserWindow, session } from "electron";
 import path from "node:path";
+import {
+  installExtension,
+  REACT_DEVELOPER_TOOLS,
+} from "electron-devtools-installer";
 
 const createWindow = () => {
   const win = new BrowserWindow({
@@ -21,6 +25,9 @@ const createWindow = () => {
 };
 
 app.whenReady().then(() => {
+  installExtension(REACT_DEVELOPER_TOOLS)
+    .then((ext) => console.log(`Added Extension:  ${ext.name}`))
+    .catch((err) => console.log("An error occurred: ", err));
   session.defaultSession.webRequest.onHeadersReceived((details, callback) => {
     callback({
       responseHeaders: {
